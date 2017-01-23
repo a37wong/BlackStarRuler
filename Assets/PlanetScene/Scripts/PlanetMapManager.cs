@@ -7,15 +7,40 @@ using UnityEngine;
  * This class is for handling the scene creation and changes
  * 
  */
-public class PlanetMapManager : MonoBehaviour {
+public class PlanetMapManager : MonoBehaviour
+{
+	public static PlanetMapManager control;
+
+	private PlanetBoardGenerator boardGenerator;
+
+	public PlanetMapManager()
+	{		
+	}
 
 	// Use this for initialization
-	void Start () {
-		
+	void Awake()
+	{
+		if (null == control)
+		{
+			DontDestroyOnLoad(gameObject);
+			control = this;
+
+			boardGenerator = GetComponent<PlanetBoardGenerator>();
+		}
+		else if (control != this)
+		{
+			Destroy(gameObject);
+		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	// todo: remove test function
+	private void Start()
+	{
+		InitPlanetMap();
+	}
+
+	public void InitPlanetMap()
+	{
+		boardGenerator.setupScene(1);
 	}
 }
