@@ -42,10 +42,13 @@ public class PlanetMapManager : MonoBehaviour
 		//make some planets as if it were a new game
 		Planet testPlanet = new Planet();
 		testPlanet.randomizePlanet(5, 5);
+		testPlanet.playerId = 0;
+		testPlanet.population = 10;
 		PlanetDataStore.control.AddPlanet(1, testPlanet);
 
 		//draw the scene as if the player clicked into planet with id 1
 		PlanetMapStateTransition.control.planetId = 1;
+		PlanetMapStateTransition.control.playerId = 0;
 		InitPlanetMap();
 	}
 
