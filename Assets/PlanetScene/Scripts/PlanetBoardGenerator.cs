@@ -21,13 +21,12 @@ public class PlanetBoardGenerator : MonoBehaviour
 	{
 		terrainTileChoice = new int[currPlanet.width, currPlanet.height];
 
-		for (int z = 0; z < currPlanet.height; z++)
+		for (int y = 0; y < currPlanet.height; y++)
 		{
 			for (int x = 0; x < currPlanet.width; x++)
 			{
-				//choose the stuff to draw on each tile, the terrain and building
-				//todo: make a proper choice of what kind of tile
-				terrainTileChoice[x,z] = 0;
+				//choose the stuff to draw on each tile, the terrain and building				
+				terrainTileChoice[x,y] = currPlanet.terrain[x,y];
 			}
 		}
 	}
@@ -38,13 +37,13 @@ public class PlanetBoardGenerator : MonoBehaviour
 		currPlanet = PlanetDataStore.control.GetPlanet(planetId);
 		initializeTiles();
 
-		for (int z = 0; z < currPlanet.height; z++)
+		for (int y = 0; y < currPlanet.height; y++)
 		{
 			for (int x = 0; x < currPlanet.width; x++)
 			{
 				//todo: draw based on the planet's actual tiles
-				GameObject terrainTileToDraw = terrainTiles[terrainTileChoice[x,z]];
-				Instantiate(terrainTileToDraw, new Vector3(x, 0f, z), Quaternion.identity);
+				GameObject terrainTileToDraw = terrainTiles[terrainTileChoice[x,y]];
+				Instantiate(terrainTileToDraw, new Vector3(x, 0f, y), Quaternion.identity);
 			}
 		}
 	}

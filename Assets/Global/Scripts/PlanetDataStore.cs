@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlanetDataStore : MonoBehaviour
@@ -8,6 +7,11 @@ public class PlanetDataStore : MonoBehaviour
 
 	private Hashtable planets;
 
+	public PlanetDataStore()
+	{
+		planets = new Hashtable();
+	}
+
 	// Use this for initialization
 	void Awake()
 	{
@@ -15,11 +19,6 @@ public class PlanetDataStore : MonoBehaviour
 		{
 			DontDestroyOnLoad(gameObject);
 			control = this;
-
-			planets = new Hashtable();
-
-			//todo: remove test data
-			planets.Add(1, new Planet());
 		}
 		else if (control != this)
 		{
