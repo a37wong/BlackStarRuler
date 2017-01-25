@@ -18,6 +18,7 @@ public class PlanetBoardGenerator : MonoBehaviour
 	//Prefabs
 	public GameObject[] terrainTiles;
 	public GameObject[] buildingTiles;
+	public GameObject constructionSiteTile;
 
 	void initializeTiles()
 	{
@@ -62,6 +63,11 @@ public class PlanetBoardGenerator : MonoBehaviour
 				{
 					GameObject buildingToDraw = buildingTiles[buildingChoice[x, y]];					
 					Instantiate(buildingToDraw, new Vector3(x + CameraZeroPointOffsetX, y + CameraZeroPointOffsetY, -0.1f), rotation);
+				}
+
+				if (currPlanet.currProductionTileId == (x + y * currPlanet.width))
+				{
+					Instantiate(constructionSiteTile, new Vector3(x + CameraZeroPointOffsetX, y + CameraZeroPointOffsetY, -0.1f), rotation);
 				}
 			}
 		}

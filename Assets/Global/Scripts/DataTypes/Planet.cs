@@ -26,10 +26,10 @@ public class Planet
 	public string name;
 	public int playerId; //player who currently owns this planet
 	public int population;
-	public int currProductionGoodId;
-	public int currProductionTile;
+	public ConstructionQueueItem currProduction;
+	public int currProductionTileId;
 	public Hashtable labourAssignment; //good id to number of people
-	public Hashtable productionProgress; //tile id to building id and progress, tile id of -1 indicates a starship
+	public Hashtable productionProgress; //good id to progress
 	public Hashtable buildings; //completed buildings on planet by tile id
 
 	/**
@@ -63,9 +63,10 @@ public class Planet
 
 		//reset the dynamic parameters of a planet
 		name = "";
-		playerId = 0; //no owner
+		playerId = -1; //no owner
 		population = 0;
-		currProductionGoodId = 0;
+		currProduction = new ConstructionQueueItem(-1, 0);
+		currProductionTileId = -1;
 		labourAssignment = new Hashtable();
 		productionProgress = new Hashtable();
 		buildings = new Hashtable();
