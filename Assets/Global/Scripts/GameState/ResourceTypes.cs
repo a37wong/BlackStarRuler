@@ -32,7 +32,7 @@ public class ResourceTypes : MonoBehaviour
 		}
 	}
 
-	//todo: pull the list of resources from some kind of ini file
+	//todo: pull the list from some kind of ini file
 	public void init()
 	{
 		//this is currently hard coded for testing purposes

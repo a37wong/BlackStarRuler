@@ -27,6 +27,7 @@ public class Planet
 	public int playerId; //player who currently owns this planet
 	public int population;
 	public int currProductionGoodId;
+	public int currProductionTile;
 	public Hashtable labourAssignment; //good id to number of people
 	public Hashtable productionProgress; //tile id to building id and progress, tile id of -1 indicates a starship
 	public Hashtable buildings; //completed buildings on planet by tile id

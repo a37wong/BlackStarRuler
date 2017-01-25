@@ -18,11 +18,11 @@ public class PlanetBoardGenerator : MonoBehaviour
 	//Prefabs
 	public GameObject[] terrainTiles;
 	public GameObject[] buildingTiles;
-	public GameObject planetTileButton;
 
 	void initializeTiles()
 	{
 		terrainTileChoice = new int[currPlanet.width, currPlanet.height];
+		buildingChoice = new int[currPlanet.width, currPlanet.height];
 
 		for (int y = 0; y < currPlanet.height; y++)
 		{
@@ -30,6 +30,11 @@ public class PlanetBoardGenerator : MonoBehaviour
 			{
 				//choose the stuff to draw on each tile, the terrain and building				
 				terrainTileChoice[x,y] = currPlanet.terrain[x,y];
+
+				if (currPlanet.buildings.ContainsKey(x + y * currPlanet.height))
+				{
+					buildingChoice[x, y] = (int)currPlanet.buildings[x + y * currPlanet.height];
+				}
 			}
 		}
 	}
@@ -40,6 +45,9 @@ public class PlanetBoardGenerator : MonoBehaviour
 		currPlanet = PlanetDataStore.control.GetPlanet(planetId);
 		initializeTiles();
 
+		Quaternion rotation = new Quaternion();
+		rotation.SetLookRotation(new Vector3(0f, 1f, 0f));
+
 		for (int y = 0; y < currPlanet.height; y++)
 		{
 			for (int x = 0; x < currPlanet.width; x++)
@@ -47,10 +55,14 @@ public class PlanetBoardGenerator : MonoBehaviour
 				GameObject terrainTileToDraw = terrainTiles[terrainTileChoice[x,y]];
 				PlanetTile planetTile = (PlanetTile)terrainTileToDraw.GetComponent<MonoBehaviour>();
 				planetTile.tileId = x + y * currPlanet.width;
-
-				Quaternion rotation = new Quaternion();
-				rotation.SetLookRotation(new Vector3(0f, 1f, 0f));
+				
 				Instantiate(terrainTileToDraw, new Vector3(x + CameraZeroPointOffsetX, y + CameraZeroPointOffsetY, 0f), rotation);
+
+				if (currPlanet.buildings.ContainsKey(x + y * currPlanet.height))
+				{
+					GameObject buildingToDraw = buildingTiles[buildingChoice[x, y]];					
+					Instantiate(buildingToDraw, new Vector3(x + CameraZeroPointOffsetX, y + CameraZeroPointOffsetY, 0f), rotation);
+				}
 			}
 		}
 	}
