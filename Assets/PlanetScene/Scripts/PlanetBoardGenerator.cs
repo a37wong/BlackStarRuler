@@ -31,9 +31,9 @@ public class PlanetBoardGenerator : MonoBehaviour
 				//choose the stuff to draw on each tile, the terrain and building				
 				terrainTileChoice[x,y] = currPlanet.terrain[x,y];
 
-				if (currPlanet.buildings.ContainsKey(x + y * currPlanet.height))
+				if (currPlanet.buildings.ContainsKey(x + y * currPlanet.width))
 				{
-					buildingChoice[x, y] = (int)currPlanet.buildings[x + y * currPlanet.height];
+					buildingChoice[x, y] = (int)currPlanet.buildings[x + y * currPlanet.width];
 				}
 			}
 		}
@@ -58,10 +58,10 @@ public class PlanetBoardGenerator : MonoBehaviour
 				
 				Instantiate(terrainTileToDraw, new Vector3(x + CameraZeroPointOffsetX, y + CameraZeroPointOffsetY, 0f), rotation);
 
-				if (currPlanet.buildings.ContainsKey(x + y * currPlanet.height))
+				if (currPlanet.buildings.ContainsKey(x + y * currPlanet.width))
 				{
 					GameObject buildingToDraw = buildingTiles[buildingChoice[x, y]];					
-					Instantiate(buildingToDraw, new Vector3(x + CameraZeroPointOffsetX, y + CameraZeroPointOffsetY, 0f), rotation);
+					Instantiate(buildingToDraw, new Vector3(x + CameraZeroPointOffsetX, y + CameraZeroPointOffsetY, -0.1f), rotation);
 				}
 			}
 		}

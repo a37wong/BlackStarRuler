@@ -51,6 +51,7 @@ public class PlanetMapManager : MonoBehaviour
 	{
 		//init game as if this were the game state manager
 		ResourceTypes.control.init();
+		BuildingTypes.control.init();
 
 		//make some planets as if it were a new game
 		Planet testPlanet = new Planet();
@@ -143,6 +144,8 @@ public class PlanetMapManager : MonoBehaviour
 
 	public void planetTileSelect_onClick(int tileId)
 	{
+		selectedTile = tileId;
+
 		//see if anything is being built here already and display the icon and progress
 		if (currPlanet.productionProgress.ContainsKey(selectedTile))
 		{
@@ -156,8 +159,7 @@ public class PlanetMapManager : MonoBehaviour
 		{
 			currentProductionProgress.text = "Nothing here";
 		}
-
-		selectedTile = tileId;
+		
 		buildMenu.SetActive(false);
 	}
 
