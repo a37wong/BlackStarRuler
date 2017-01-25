@@ -16,7 +16,10 @@ public class PlanetMapManager : MonoBehaviour
 	public Text planetName;
 	public Text freeLabourText;
 	public Text numWheatLabourers;
+	public Image currentProduction;
+	public Text currentProductionProgress;
 
+	//
 	private PlanetBoardGenerator boardGenerator;
 	private Planet currPlanet;
 
@@ -123,5 +126,10 @@ public class PlanetMapManager : MonoBehaviour
 		currPlanet.labourAssignment[0] = (int)currPlanet.labourAssignment[0] - 1;
 		refreshFreeLabour(calculateFreeLabour());
 		numWheatLabourers.text = currPlanet.labourAssignment[0].ToString();
+	}
+
+	public void planetTileSelect_onClick(int tileId)
+	{
+		currentProductionProgress.text = "Selected Tile: " + tileId.ToString();
 	}
 }

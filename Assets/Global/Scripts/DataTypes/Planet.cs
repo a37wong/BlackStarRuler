@@ -28,7 +28,8 @@ public class Planet
 	public int population;
 	public int currProductionGoodId;
 	public Hashtable labourAssignment; //good id to number of people
-	public Hashtable productionProgress; //good id to production hammers put in already
+	public Hashtable productionProgress; //tile id to building id and progress, tile id of -1 indicates a starship
+	public Hashtable buildings; //completed buildings on planet by tile id
 
 	/**
 	 * This is used to initialize a planet to some values
@@ -66,5 +67,6 @@ public class Planet
 		currProductionGoodId = 0;
 		labourAssignment = new Hashtable();
 		productionProgress = new Hashtable();
+		buildings = new Hashtable();
 	}
 }

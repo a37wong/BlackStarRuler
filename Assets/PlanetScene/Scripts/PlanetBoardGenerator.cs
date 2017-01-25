@@ -18,6 +18,7 @@ public class PlanetBoardGenerator : MonoBehaviour
 	//Prefabs
 	public GameObject[] terrainTiles;
 	public GameObject[] buildingTiles;
+	public GameObject planetTileButton;
 
 	void initializeTiles()
 	{
@@ -43,8 +44,10 @@ public class PlanetBoardGenerator : MonoBehaviour
 		{
 			for (int x = 0; x < currPlanet.width; x++)
 			{
-				//todo: draw based on the planet's actual tiles
 				GameObject terrainTileToDraw = terrainTiles[terrainTileChoice[x,y]];
+				PlanetTile planetTile = (PlanetTile)terrainTileToDraw.GetComponent<MonoBehaviour>();
+				planetTile.tileId = x + y * currPlanet.width;
+
 				Quaternion rotation = new Quaternion();
 				rotation.SetLookRotation(new Vector3(0f, 1f, 0f));
 				Instantiate(terrainTileToDraw, new Vector3(x + CameraZeroPointOffsetX, y + CameraZeroPointOffsetY, 0f), rotation);
