@@ -26,6 +26,7 @@ public class Planet
 	public string name;
 	public int playerId; //player who currently owns this planet
 	public int population;
+	public int currProductionGoodId;
 	public Hashtable labourAssignment; //good id to number of people
 	public Hashtable productionProgress; //good id to production hammers put in already
 
@@ -62,6 +63,7 @@ public class Planet
 		name = "";
 		playerId = 0; //no owner
 		population = 0;
+		currProductionGoodId = 0;
 		labourAssignment = new Hashtable();
 		productionProgress = new Hashtable();
 	}
