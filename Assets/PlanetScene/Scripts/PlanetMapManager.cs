@@ -16,12 +16,18 @@ public class PlanetMapManager : MonoBehaviour
 	public Text planetName;
 	public Text freeLabourText;
 	public Text numWheatLabourers;
-
+	public Button currentProduction;
+	public Text currentProductionProgress;
+	public GameObject buildMenu;
+	
+	//
 	private PlanetBoardGenerator boardGenerator;
 	private Planet currPlanet;
+	private int selectedTile;
 
 	public PlanetMapManager()
-	{		
+	{
+		selectedTile = -1;
 	}
 
 	// Use this for initialization
@@ -45,6 +51,7 @@ public class PlanetMapManager : MonoBehaviour
 	{
 		//init game as if this were the game state manager
 		ResourceTypes.control.init();
+		BuildingTypes.control.init();
 
 		//make some planets as if it were a new game
 		Planet testPlanet = new Planet();
@@ -53,6 +60,7 @@ public class PlanetMapManager : MonoBehaviour
 		testPlanet.population = 10;
 		testPlanet.labourAssignment[0] = 1;
 		testPlanet.name = "Uldrakh";
+		testPlanet.buildings[5] = 0;
 		PlanetDataStore.control.AddPlanet(1, testPlanet);
 
 		//draw the scene as if the player clicked into planet with id 1
@@ -72,6 +80,15 @@ public class PlanetMapManager : MonoBehaviour
 
 		refreshFreeLabour(calculateFreeLabour());		
 		numWheatLabourers.text = currPlanet.labourAssignment[0].ToString();
+				
+		if (currPlanet.currProductionGoodId != 0)
+		{			
+			currentProductionProgress.text = ((KeyValuePair<int, int>)currPlanet.productionProgress[currPlanet.currProductionTile]).Value.ToString() + " / 100";
+		}
+		else
+		{
+			currentProductionProgress.text = "No current production";
+		}
 	}
 
 	private int calculateFreeLabour()
@@ -123,5 +140,65 @@ public class PlanetMapManager : MonoBehaviour
 		currPlanet.labourAssignment[0] = (int)currPlanet.labourAssignment[0] - 1;
 		refreshFreeLabour(calculateFreeLabour());
 		numWheatLabourers.text = currPlanet.labourAssignment[0].ToString();
+	}
+
+	public void planetTileSelect_onClick(int tileId)
+	{
+		selectedTile = tileId;
+
+		//see if anything is being built here already and display the icon and progress
+		if (currPlanet.productionProgress.ContainsKey(selectedTile))
+		{
+			currentProductionProgress.text = ((KeyValuePair<int, int>)currPlanet.productionProgress[selectedTile]).Value.ToString() + " / 100";
+		}
+		else if (currPlanet.buildings.ContainsKey(selectedTile) && (int)currPlanet.buildings[selectedTile] > -1)
+		{
+			currentProductionProgress.text = BuildingTypes.control.buildingTypes[(int)currPlanet.buildings[selectedTile]].name;
+		}
+		else
+		{
+			currentProductionProgress.text = "Nothing here";
+		}
+		
+		buildMenu.SetActive(false);
+	}
+
+	public void selectConstruction_onClick()
+	{
+		if (-1 == selectedTile)
+		{
+			//we've no tile selected
+			return;
+		}
+		else if (currPlanet.buildings.ContainsKey(selectedTile))
+		{
+			//something is already built here
+			//todo: deconstruction?
+			return;
+		}
+
+		buildMenu.SetActive(true);
+	}
+
+	public void buildingToConstruct_onClick(int buildingId)
+	{
+		//todo: display a warning if replacing current production
+
+		//set the current production to the new option
+		currPlanet.currProductionGoodId = buildingId;
+		currPlanet.currProductionTile = selectedTile;
+
+		//display the progress
+		if (currPlanet.productionProgress.ContainsKey(selectedTile))
+		{
+			currentProductionProgress.text = ((KeyValuePair<int, int>)currPlanet.productionProgress[selectedTile]).Value.ToString() + " / 100";
+		}
+		else
+		{
+			currentProductionProgress.text = "0 / 100";
+		}		
+
+		//hide the build menu after making a choice
+		buildMenu.SetActive(false);
 	}
 }

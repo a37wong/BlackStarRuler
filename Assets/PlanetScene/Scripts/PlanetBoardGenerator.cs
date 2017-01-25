@@ -22,6 +22,7 @@ public class PlanetBoardGenerator : MonoBehaviour
 	void initializeTiles()
 	{
 		terrainTileChoice = new int[currPlanet.width, currPlanet.height];
+		buildingChoice = new int[currPlanet.width, currPlanet.height];
 
 		for (int y = 0; y < currPlanet.height; y++)
 		{
@@ -29,6 +30,11 @@ public class PlanetBoardGenerator : MonoBehaviour
 			{
 				//choose the stuff to draw on each tile, the terrain and building				
 				terrainTileChoice[x,y] = currPlanet.terrain[x,y];
+
+				if (currPlanet.buildings.ContainsKey(x + y * currPlanet.width))
+				{
+					buildingChoice[x, y] = (int)currPlanet.buildings[x + y * currPlanet.width];
+				}
 			}
 		}
 	}
@@ -39,15 +45,24 @@ public class PlanetBoardGenerator : MonoBehaviour
 		currPlanet = PlanetDataStore.control.GetPlanet(planetId);
 		initializeTiles();
 
+		Quaternion rotation = new Quaternion();
+		rotation.SetLookRotation(new Vector3(0f, 1f, 0f));
+
 		for (int y = 0; y < currPlanet.height; y++)
 		{
 			for (int x = 0; x < currPlanet.width; x++)
 			{
-				//todo: draw based on the planet's actual tiles
 				GameObject terrainTileToDraw = terrainTiles[terrainTileChoice[x,y]];
-				Quaternion rotation = new Quaternion();
-				rotation.SetLookRotation(new Vector3(0f, 1f, 0f));
+				PlanetTile planetTile = (PlanetTile)terrainTileToDraw.GetComponent<MonoBehaviour>();
+				planetTile.tileId = x + y * currPlanet.width;
+				
 				Instantiate(terrainTileToDraw, new Vector3(x + CameraZeroPointOffsetX, y + CameraZeroPointOffsetY, 0f), rotation);
+
+				if (currPlanet.buildings.ContainsKey(x + y * currPlanet.width))
+				{
+					GameObject buildingToDraw = buildingTiles[buildingChoice[x, y]];					
+					Instantiate(buildingToDraw, new Vector3(x + CameraZeroPointOffsetX, y + CameraZeroPointOffsetY, -0.1f), rotation);
+				}
 			}
 		}
 	}
