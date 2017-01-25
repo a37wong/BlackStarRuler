@@ -11,6 +11,10 @@ public class PlanetMapStateTransition : MonoBehaviour {
 	//this controls what planet the PlanetMapManager is going to display when you transition to planet scene
 	public int planetId;
 
+	//this controls who is viewing the planet
+	//which determines whether the person can do anything in this screen to modify the planet
+	public int playerId;
+
 	// Use this for initialization
 	void Awake()
 	{

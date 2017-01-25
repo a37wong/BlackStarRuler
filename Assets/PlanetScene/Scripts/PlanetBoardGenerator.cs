@@ -8,6 +8,8 @@ using UnityEngine;
  */
 public class PlanetBoardGenerator : MonoBehaviour
 {
+	public int CameraZeroPointOffsetX = 0;
+	public int CameraZeroPointOffsetY = 0;
 	private Planet currPlanet;
 
 	private int[,] terrainTileChoice;
@@ -43,7 +45,9 @@ public class PlanetBoardGenerator : MonoBehaviour
 			{
 				//todo: draw based on the planet's actual tiles
 				GameObject terrainTileToDraw = terrainTiles[terrainTileChoice[x,y]];
-				Instantiate(terrainTileToDraw, new Vector3(x, 0f, y), Quaternion.identity);
+				Quaternion rotation = new Quaternion();
+				rotation.SetLookRotation(new Vector3(0f, 1f, 0f));
+				Instantiate(terrainTileToDraw, new Vector3(x + CameraZeroPointOffsetX, y + CameraZeroPointOffsetY, 0f), rotation);
 			}
 		}
 	}
