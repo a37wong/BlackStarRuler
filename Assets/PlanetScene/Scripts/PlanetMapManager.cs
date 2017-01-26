@@ -18,6 +18,7 @@ public class PlanetMapManager : MonoBehaviour
 	public Text numWheatLabourers;
 	public Button currentProduction;
 	public Text currentProductionProgress;
+	public Text currentSelectedTile;
 	public GameObject buildMenu;
 	
 	//
@@ -81,9 +82,9 @@ public class PlanetMapManager : MonoBehaviour
 		refreshFreeLabour(calculateFreeLabour());		
 		numWheatLabourers.text = currPlanet.labourAssignment[0].ToString();
 				
-		if (currPlanet.currProductionGoodId != 0)
+		if (currPlanet.currProduction.goodId >= 0)
 		{			
-			currentProductionProgress.text = ((KeyValuePair<int, int>)currPlanet.productionProgress[currPlanet.currProductionTile]).Value.ToString() + " / 100";
+			currentProductionProgress.text = currPlanet.currProduction.progress + " / 100";
 		}
 		else
 		{
@@ -146,18 +147,16 @@ public class PlanetMapManager : MonoBehaviour
 	{
 		selectedTile = tileId;
 
-		//see if anything is being built here already and display the icon and progress
-		if (currPlanet.productionProgress.ContainsKey(selectedTile))
+		//see if anything is being built here already
+		if (currPlanet.buildings.ContainsKey(selectedTile))
 		{
-			currentProductionProgress.text = ((KeyValuePair<int, int>)currPlanet.productionProgress[selectedTile]).Value.ToString() + " / 100";
-		}
-		else if (currPlanet.buildings.ContainsKey(selectedTile) && (int)currPlanet.buildings[selectedTile] > -1)
-		{
-			currentProductionProgress.text = BuildingTypes.control.buildingTypes[(int)currPlanet.buildings[selectedTile]].name;
+			int buildingTypeId = (int)currPlanet.buildings[selectedTile];
+			Building selectedBuildingOnTile = BuildingTypes.control.buildingTypes[buildingTypeId];
+			currentSelectedTile.text = selectedBuildingOnTile.name;
 		}
 		else
 		{
-			currentProductionProgress.text = "Nothing here";
+			currentSelectedTile.text = "Nothing here";
 		}
 		
 		buildMenu.SetActive(false);
@@ -180,23 +179,28 @@ public class PlanetMapManager : MonoBehaviour
 		buildMenu.SetActive(true);
 	}
 
-	public void buildingToConstruct_onClick(int buildingId)
+	public void buildingToConstruct_onClick(int goodId)
 	{
-		//todo: display a warning if replacing current production
+		//todo: display a warning if replacing current production		
+		//enqueue any current production
+		currPlanet.productionProgress[currPlanet.currProduction.goodId] = currPlanet.currProduction;
 
-		//set the current production to the new option
-		currPlanet.currProductionGoodId = buildingId;
-		currPlanet.currProductionTile = selectedTile;
-
-		//display the progress
-		if (currPlanet.productionProgress.ContainsKey(selectedTile))
+		//find if we already have some progress on the choice and pull it out of the queue
+		if (currPlanet.productionProgress.ContainsKey(goodId))
 		{
-			currentProductionProgress.text = ((KeyValuePair<int, int>)currPlanet.productionProgress[selectedTile]).Value.ToString() + " / 100";
+			ConstructionQueueItem previousQueueItem = (ConstructionQueueItem)currPlanet.productionProgress[goodId];
+			int progress = previousQueueItem.progress;
+			currPlanet.currProduction = new ConstructionQueueItem(goodId, progress);
+
+			currPlanet.productionProgress.Remove(goodId);
 		}
-		else
-		{
-			currentProductionProgress.text = "0 / 100";
-		}		
+		
+		//set the location of the current production
+		//todo: starships have selectedTile of -1
+		currPlanet.currProductionTileId = selectedTile;
+				
+		//display the progress		
+		currentProductionProgress.text = currPlanet.currProduction.progress.ToString() + " / 100";
 
 		//hide the build menu after making a choice
 		buildMenu.SetActive(false);
