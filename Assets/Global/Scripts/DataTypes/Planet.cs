@@ -16,6 +16,8 @@ using Random = UnityEngine.Random;
 [Serializable]
 public class Planet
 {
+	public const int POPULATION_GROWTH_PROGRESS_MAX = 200;
+
 	//values that are static to a planet
 	public int width;
 	public int height;
@@ -31,6 +33,7 @@ public class Planet
 	public Hashtable labourAssignment; //good id to number of people
 	public Hashtable productionProgress; //good id to progress
 	public Hashtable buildings; //completed buildings on planet by tile id
+	public int populationGrowthProgress;
 
 	/**
 	 * This is used to initialize a planet to some values
@@ -70,5 +73,43 @@ public class Planet
 		labourAssignment = new Hashtable();
 		productionProgress = new Hashtable();
 		buildings = new Hashtable();
+	}
+
+	public void endTurn()
+	{
+		Player ownerPlayer = (Player)PlayerDataStore.control.players[this.playerId];
+
+		//population growth
+		Resource[] foodTypes = ResourceTypes.control.foodResources;
+		int foodEaten = 0;
+
+		for (int i = 0; i < foodTypes.Length; i++)
+		{
+			int currFoodGoodId = foodTypes[i].id;
+			int maxFoodToEat = Math.Max((int)ownerPlayer.resources[currFoodGoodId], this.population);
+
+			foodEaten = foodEaten + maxFoodToEat;
+			ownerPlayer.resources[currFoodGoodId] = (int)ownerPlayer.resources[currFoodGoodId] - maxFoodToEat;
+		}
+
+		if (foodEaten < this.population)
+		{
+			//insufficient food eaten, starvation is occurring
+			int foodShortfall = this.population - foodEaten;
+			this.populationGrowthProgress = this.populationGrowthProgress - foodShortfall;
+		}
+		else
+		{
+			populationGrowthProgress = populationGrowthProgress + foodEaten;
+		}
+
+		if (populationGrowthProgress > POPULATION_GROWTH_PROGRESS_MAX)
+		{
+			this.population = this.population + 1;
+			this.populationGrowthProgress = this.populationGrowthProgress - POPULATION_GROWTH_PROGRESS_MAX;
+			//todo: game event to alert player that population grew
+		}
+
+		//todo: money from consuming trade goods
 	}
 }

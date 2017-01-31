@@ -6,7 +6,7 @@ public class BuildingTypes : MonoBehaviour
 {
 	public static BuildingTypes control;
 
-	public Building[] buildingTypes;
+	public Hashtable buildingTypes;
 	
 	// Use this for initialization
 	void Awake()
@@ -15,6 +15,7 @@ public class BuildingTypes : MonoBehaviour
 		{
 			DontDestroyOnLoad(gameObject);
 			control = this;
+			buildingTypes = new Hashtable();
 		}
 		else if (control != this)
 		{
@@ -28,6 +29,6 @@ public class BuildingTypes : MonoBehaviour
 		//this is currently hard coded for testing purposes
 		Building farm = new Building("Farm", 120);
 
-		buildingTypes = new Building[] { farm };
+		buildingTypes.Add(0, farm);
 	}
 }
