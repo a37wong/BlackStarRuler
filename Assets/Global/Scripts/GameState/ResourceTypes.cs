@@ -13,6 +13,10 @@ public class ResourceTypes : MonoBehaviour
 {
 	public static ResourceTypes control;
 
+	//todo: use an init file for special values?
+	public const int MONEY_GOOD_ID = 100;
+	public const int PRODUCTION_GOOD_ID = 200;
+
 	public Resource[] resourceTypes;
 	public Resource[] foodResources;
 	public Resource[] metalResources;

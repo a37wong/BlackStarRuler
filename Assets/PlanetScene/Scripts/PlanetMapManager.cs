@@ -76,7 +76,7 @@ public class PlanetMapManager : MonoBehaviour
 		boardGenerator.setupScene(planetId);
 
 		//fill out dynamic information like planet name
-		currPlanet = PlanetDataStore.control.GetPlanet(planetId);
+		currPlanet = PlanetDataStore.control.getPlanet(planetId);
 		planetName.text = currPlanet.name;
 
 		refreshFreeLabour(calculateFreeLabour());		

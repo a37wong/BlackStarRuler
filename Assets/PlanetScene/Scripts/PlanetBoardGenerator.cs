@@ -43,7 +43,7 @@ public class PlanetBoardGenerator : MonoBehaviour
 	// Draw the actual planet board
 	public void setupScene(int planetId)
 	{
-		currPlanet = PlanetDataStore.control.GetPlanet(planetId);
+		currPlanet = PlanetDataStore.control.getPlanet(planetId);
 		initializeTiles();
 
 		Quaternion rotation = new Quaternion();

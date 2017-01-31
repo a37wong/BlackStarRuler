@@ -6,10 +6,11 @@ using UnityEngine;
 [Serializable]
 public class Player : MonoBehaviour
 {
-	ArrayList SolarSystemIds;
+	public ArrayList solarSystemIds;
+	public Hashtable resources; //good id to amount
 
 	public Player()
 	{
-		this.SolarSystemIds = new ArrayList();
+		this.solarSystemIds = new ArrayList();
 	}
 }

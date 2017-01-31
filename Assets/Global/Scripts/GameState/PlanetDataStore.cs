@@ -33,7 +33,7 @@ public class PlanetDataStore : MonoBehaviour
 		planets.Add(id, planet);
 	}
 
-	public Planet GetPlanet(int id)
+	public Planet getPlanet(int id)
 	{
 		return (Planet)planets[id];
 	}

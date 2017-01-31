@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections;
 
-namespace AssemblyCSharp
+[Serializable]
+public class SolarSystem
 {
-	public class SolarSystem
+	public ArrayList planetIds = new ArrayList();
+	public ArrayList fleetIds = new ArrayList();
+
+	public SolarSystem ()
 	{
-		ArrayList planetIds = new ArrayList();
-		ArrayList fleetIds = new ArrayList();
-		public SolarSystem ()
-		{
-		}
 	}
 }
-
