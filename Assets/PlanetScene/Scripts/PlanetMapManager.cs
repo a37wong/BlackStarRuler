@@ -151,7 +151,7 @@ public class PlanetMapManager : MonoBehaviour
 		if (currPlanet.buildings.ContainsKey(selectedTile))
 		{
 			int buildingTypeId = (int)currPlanet.buildings[selectedTile];
-			Building selectedBuildingOnTile = BuildingTypes.control.buildingTypes[buildingTypeId];
+			Building selectedBuildingOnTile = (Building)BuildingTypes.control.buildingTypes[buildingTypeId];
 			currentSelectedTile.text = selectedBuildingOnTile.name;
 		}
 		else
